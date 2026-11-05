@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Akari Store · Maquillaje y belleza</title>
+<meta name="description" content="Akari Store: maquillaje, cuidado de la piel y accesorios de belleza. Novedades, ofertas y looks paso a paso.">
+<meta name="theme-color" content="#F8BBD0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ==========================================================================
+   1. TOKENS
+   ========================================================================== */
+:root{
+  /* Paleta pastel */
+  --bg:#FAFAFA;
+  --surface:#FFFFFF;
+  --text:#333333;
+  --muted:#6B6670;
+  --line:#EDE7EC;
+
+  --rose:#F8BBD0;
+  --peach:#FFE0B2;
+  --mint:#C8E6C9;
+  --lavender:#D1C4E9;
+
+  --rose-soft:#FCE4EC;
+  --peach-soft:#FFF3E0;
+  --mint-soft:#E8F5E9;
+  --lavender-soft:#EDE7F6;
+
+  --rose-deep:#F48FB1;
+  --rose-ink:#B0446F;
+
+  /* Tipografía */
+  --font-head:'Playfair Display','Lora',Georgia,serif;
+  --font-body:'Poppins','Montserrat',system-ui,-apple-system,'Segoe UI',sans-serif;
+
+  /* Layout */
+  --container:1240px;
+  --radius:22px;
+  --radius-lg:30px;
+  --shadow:0 14px 36px rgba(120,80,110,.14);
+  --shadow-sm:0 6px 18px rgba(120,80,110,.10);
+  --header-h:78px;
+  --ease:cubic-bezier(.22,.8,.3,1);
+}
+
+/* ==========================================================================
+   2. RESET / BASE
+   ========================================================================== */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--font-body);font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+body.no-scroll{overflow:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+ul{list-style:none;margin:0;padding:0}
+h1,h2,h3,h4,p{margin:0}
+h1,h2,h3,h4{font-family:var(--font-head);font-weight:600;line-height:1.2}
+section[id]{scroll-margin-top:96px}
+:focus-visible{outline:3px solid var(--rose-ink);outline-offset:3px;border-radius:8px}
+
+.container{width:100%;max-width:var(--container);margin-inline:auto;padding-inline:clamp(16px,4vw,32px)}
+.visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip-link{position:absolute;left:16px;top:-60px;background:var(--text);color:#fff;padding:10px 16px;border-radius:10px;z-index:200;transition:top .2s}
+.skip-link:focus{top:12px}
+
+/* Iconos (sprite SVG) */
+.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ic-sm{width:18px;height:18px}
+
+/* Tonos reutilizables */
+.tone-rose{--tone-a:var(--rose-soft);--tone-b:var(--rose)}
+.tone-peach{--tone-a:var(--peach-soft);--tone-b:var(--peach)}
+.tone-mint{--tone-a:var(--mint-soft);--tone-b:var(--mint)}
+.tone-lavender{--tone-a:var(--lavender-soft);--tone-b:var(--lavender)}
+
+/* Contenedor de imagen con degradado de respaldo (si la foto no carga) */
+.media{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--tone-a,#fff),var(--tone-b,var(--rose)))}
+.media::before{
+  content:"✦";position:absolute;inset:0;display:grid;place-items:center;
+  font:64px/1 var(--font-head);color:rgba(255,255,255,.75)
+}
+.media img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transform:scale(1.02);transition:opacity .7s ease,transform .8s var(--ease)
+}
+.media img.is-loaded{opacity:1;transform:scale(1)}
+
+/* Botones */
+.btn{
+  display:inline-flex;align-items:center;gap:10px;justify-content:center;
+  padding:14px 28px;border-radius:999px;font-weight:500;font-size:15px;
+  transition:transform .25s var(--ease),background .25s,color .25s,box-shadow .25s
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-dark{background:var(--text);color:#fff;box-shadow:0 8px 20px rgba(51,51,51,.22)}
+.btn-dark:hover{background:var(--rose-ink)}
+.btn-ghost{background:rgba(255,255,255,.85);color:var(--text)}
+.btn-ghost:hover{background:#fff;box-shadow:var(--shadow-sm)}
+
+/* Encabezado de sección */
+.section{padding-block:clamp(48px,7vw,88px)}
+.section-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px 24px;margin-bottom:clamp(24px,4vw,40px)}
+.eyebrow{
+  display:inline-block;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  padding:5px 14px;border-radius:999px;margin-bottom:12px;background:var(--tone-b,var(--rose))
+}
+.section-head h2{font-size:clamp(28px,4vw,42px)}
+.section-head p{color:var(--muted);margin-top:8px;max-width:520px}
+.link-arrow{display:inline-flex;align-items:center;gap:8px;font-weight:500;color:var(--rose-ink);transition:gap .25s var(--ease)}
+.link-arrow:hover{gap:14px}
+
+/* Animación de entrada al hacer scroll */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s var(--ease)}
+.reveal.is-in{opacity:1;transform:none}
+
+/* ==========================================================================
+   3. HEADER
+   ========================================================================== */
+.announce{background:var(--rose);font-size:13px;text-align:center;padding:9px 16px}
+.announce strong{font-weight:600}
+
+.site-header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(250,250,250,.88);
+  -webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);
+  border-bottom:1px solid transparent;
+  transition:box-shadow .3s,border-color .3s,background .3s
+}
+.site-header.is-scrolled{box-shadow:0 8px 26px rgba(120,80,110,.12);border-color:var(--line);background:rgba(255,255,255,.94)}
+.header-inner{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:var(--header-h);transition:height .3s var(--ease)}
+.is-scrolled .header-inner{height:64px}
+
+.header-left{display:flex;align-items:center}
+.logo{display:flex;align-items:center;gap:8px;font-family:var(--font-head);font-size:clamp(24px,3vw,30px);font-weight:700;letter-spacing:.01em}
+.logo .ic{color:var(--rose-deep);fill:var(--rose);width:20px;height:20px}
+.logo em{font-style:italic;font-weight:500;color:var(--rose-ink)}
+
+.icon-btn{position:relative;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;transition:background .25s,transform .25s var(--ease)}
+.icon-btn:hover{background:var(--rose-soft);transform:translateY(-1px)}
+.count{
+  position:absolute;top:2px;right:0;min-width:18px;height:18px;padding:0 5px;border-radius:999px;
+  background:var(--rose-ink);color:#fff;font-size:11px;font-weight:600;line-height:18px;text-align:center;
+  transform:scale(0);transition:transform .35s var(--ease)
+}
+.count.has-items{transform:scale(1)}
+.count.bump{animation:bump .45s var(--ease)}
+@keyframes bump{50%{transform:scale(1.4)}}
+
+/* Navegación principal */
+.menu-toggle{display:none}
+.main-nav>ul{display:flex;align-items:center;gap:2px}
+.nav-link{
+  display:inline-flex;align-items:center;gap:6px;padding:10px 14px;border-radius:999px;
+  font-size:14.5px;font-weight:500;transition:background .25s
+}
+.nav-link:hover,.has-dropdown.open>.nav-link{background:var(--rose-soft)}
+.nav-link .ic{width:14px;height:14px;transition:transform .3s var(--ease)}
+.has-dropdown.open>.nav-link .ic{transform:rotate(180deg)}
+
+.has-dropdown{position:relative}
+.dropdown{
+  position:absolute;left:0;top:100%;min-width:260px;margin-top:8px;padding:10px;
+  background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);
+  opacity:0;visibility:hidden;transform:translateY(10px);
+  transition:opacity .25s ease,transform .3s var(--ease),visibility 0s .3s
+}
+.dropdown::before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px} /* puente para el hover */
+.has-dropdown.open>.dropdown{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.dropdown a{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;font-size:14.5px;transition:background .2s,padding .25s var(--ease)}
+.dropdown a:hover{background:var(--rose-soft);padding-left:20px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--c,var(--rose));flex:none}
+.dropdown .all{margin-top:6px;border-top:1px solid var(--line);border-radius:0 0 12px 12px;color:var(--rose-ink);font-weight:500}
+
+/* Acciones derecha */
+.header-actions{display:flex;align-items:center;justify-content:flex-end;gap:4px}
+.search{position:relative}
+.search input{
+  width:210px;padding:10px 16px 10px 40px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:14px;
+  transition:width .35s var(--ease),border-color .25s,box-shadow .25s
+}
+.search input:focus{width:280px;outline:none;border-color:var(--rose-deep);box-shadow:0 0 0 4px rgba(248,187,208,.45)}
+.search .ic{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted);pointer-events:none}
+.search-toggle{display:none}
+
+/* Carrito flotante */
+.fab{
+  position:fixed;right:clamp(14px,3vw,28px);bottom:clamp(14px,3vw,28px);z-index:60;
+  width:60px;height:60px;border-radius:50%;background:var(--text);color:#fff;display:grid;place-items:center;
+  box-shadow:0 12px 28px rgba(51,51,51,.3);
+  opacity:0;visibility:hidden;transform:translateY(20px) scale(.9);
+  transition:opacity .3s,transform .4s var(--ease),visibility 0s .4s,background .25s
+}
+.fab.is-visible{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.fab:hover{background:var(--rose-ink)}
+.fab .count{top:-2px;right:-2px;border:2px solid var(--bg)}
+
+/* ==========================================================================
+   4. HERO / SLIDER
+   ========================================================================== */
+.hero{padding-top:20px}
+.slider{position:relative;border-radius:var(--radius-lg);overflow:hidden;min-height:clamp(520px,72vh,660px);box-shadow:var(--shadow);background:var(--rose-soft)}
+.slide{
+  position:absolute;inset:0;display:flex;align-items:center;
+  opacity:0;visibility:hidden;transition:opacity .9s ease,visibility 0s .9s
+}
+.slide.is-active{opacity:1;visibility:visible;transition-delay:0s}
+.slide .bg{position:absolute;inset:0}
+.slide .bg img{transform:scale(1.08);transition:opacity .7s ease,transform 7s ease-out}
+.slide.is-active .bg img.is-loaded{transform:scale(1)}
+.slide::after{
+  content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(90deg,rgba(var(--tint),.97) 0%,rgba(var(--tint),.9) 38%,rgba(var(--tint),.18) 76%,rgba(var(--tint),0) 100%)
+}
+.slide-content{position:relative;z-index:2;max-width:660px;padding:clamp(28px,5vw,64px);padding-left:clamp(28px,9vw,96px)}
+.slide-content>*{opacity:0}
+.slide.is-active .slide-content>*{animation:rise .9s var(--ease) both;animation-delay:calc(var(--i,0)*.12s + .15s)}
+.slide-content>:nth-child(1){--i:0}.slide-content>:nth-child(2){--i:1}.slide-content>:nth-child(3){--i:2}.slide-content>:nth-child(4){--i:3}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.chip{display:inline-block;padding:6px 16px;border-radius:999px;background:rgba(255,255,255,.8);font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px}
+.slide h2{font-size:clamp(34px,4.6vw,56px);margin-bottom:16px}
+.slide h2 em{font-style:italic;font-weight:500}
+.slide p{font-size:clamp(15px,1.6vw,18px);margin-bottom:28px;max-width:440px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+
+.slider-btn{
+  position:absolute;top:50%;z-index:3;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;
+  background:rgba(255,255,255,.88);display:grid;place-items:center;box-shadow:var(--shadow-sm);transition:background .25s,transform .25s var(--ease)
+}
+.slider-btn:hover{background:#fff;transform:translateY(-50%) scale(1.08)}
+.slider-btn.prev{left:18px}.slider-btn.next{right:18px}
+.dots{position:absolute;left:50%;bottom:20px;z-index:3;transform:translateX(-50%);display:flex;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.7)}
+.dots button{width:10px;height:10px;border-radius:999px;background:rgba(51,51,51,.28);transition:width .35s var(--ease),background .25s}
+.dots button[aria-current="true"]{width:30px;background:var(--text)}
+
+/* Beneficios */
+.benefits{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding-block:28px 0}
+.benefit{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--surface);border:1px solid var(--line);border-radius:18px}
+.benefit .ico{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--tone-b);flex:none}
+.benefit strong{display:block;font-size:14px;font-weight:500;line-height:1.3}
+.benefit span{font-size:12.5px;color:var(--muted);line-height:1.3;display:block}
+
+/* ==========================================================================
+   5. CATEGORÍAS
+   ========================================================================== */
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,3vw,32px)}
+.cat-card{display:block;text-align:center}
+.cat-circle{
+  aspect-ratio:1;border-radius:50%;padding:9px;background:var(--tone-b);
+  transition:transform .4s var(--ease),box-shadow .4s,padding .4s var(--ease)
+}
+.cat-circle .media{width:100%;height:100%;border-radius:50%}
+.cat-card:hover .cat-circle{transform:translateY(-8px);box-shadow:var(--shadow);padding:5px}
+.cat-card:hover .media img.is-loaded{transform:scale(1.08)}
+.cat-card h3{font-size:clamp(19px,2vw,24px);margin-top:18px}
+.cat-card span{font-size:13.5px;color:var(--rose-ink);font-weight:500;display:inline-flex;align-items:center;gap:6px;margin-top:2px}
+
+/* ==========================================================================
+   6. PRODUCTOS
+   ========================================================================== */
+.products-bg{background:var(--surface);border-block:1px solid var(--line)}
+.tabs{display:inline-flex;padding:5px;background:var(--bg);border:1px solid var(--line);border-radius:999px;gap:4px}
+.tab{padding:10px 22px;border-radius:999px;font-size:14.5px;font-weight:500;transition:background .3s,box-shadow .3s}
+.tab:hover{background:var(--rose-soft)}
+.tab[aria-selected="true"]{background:var(--rose);box-shadow:var(--shadow-sm)}
+
+.results-note{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:22px;padding:12px 18px;border-radius:16px;background:var(--lavender-soft);font-size:14.5px}
+.results-note[hidden]{display:none}
+.results-note button{margin-left:auto;color:var(--rose-ink);font-weight:500;text-decoration:underline;text-underline-offset:3px}
+
+.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2.4vw,28px)}
+.product-card{animation:cardIn .7s var(--ease) both;animation-delay:calc(var(--i,0)*.08s)}
+@keyframes cardIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.product-media{aspect-ratio:4/5;border-radius:var(--radius);transition:transform .4s var(--ease),box-shadow .4s}
+.product-card:hover .product-media{transform:translateY(-6px);box-shadow:var(--shadow)}
+.product-card:hover .media img.is-loaded{transform:scale(1.06)}
+.tag{position:absolute;top:12px;left:12px;z-index:2;padding:4px 12px;border-radius:999px;background:#fff;font-size:11.5px;font-weight:600;letter-spacing:.04em}
+.wish{
+  position:absolute;top:10px;right:10px;z-index:2;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.92);
+  display:grid;place-items:center;transition:transform .25s var(--ease),color .25s
+}
+.wish .ic{width:18px;height:18px}
+.wish:hover{transform:scale(1.12)}
+.wish[aria-pressed="true"]{color:var(--rose-ink)}
+.wish[aria-pressed="true"] .ic{fill:var(--rose-deep)}
+.quick-add{
+  position:absolute;left:12px;right:12px;bottom:12px;z-index:2;display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px;border-radius:14px;background:rgba(255,255,255,.96);font-size:14px;font-weight:500;box-shadow:var(--shadow-sm);
+  transform:translateY(130%);opacity:0;transition:transform .45s var(--ease),opacity .3s,background .25s,color .25s
+}
+.product-card:hover .quick-add,.product-card:focus-within .quick-add{transform:none;opacity:1}
+.quick-add:hover{background:var(--text);color:#fff}
+
+.product-info{padding:16px 4px 0}
+.brand{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.name{font-family:var(--font-body);font-size:15px;font-weight:500;line-height:1.4;margin-top:4px;min-height:2.8em}
+.name a:hover{color:var(--rose-ink)}
+.price-row{display:flex;align-items:center;gap:8px;margin-top:10px}
+.price{font-weight:600;font-size:17px}
+.old{color:var(--muted);font-size:13.5px;text-decoration:line-through}
+.add-round{margin-left:auto;width:40px;height:40px;border-radius:50%;background:var(--rose);display:grid;place-items:center;transition:transform .3s var(--ease),background .25s,color .25s}
+.add-round:hover{background:var(--text);color:#fff;transform:rotate(90deg) scale(1.08)}
+.empty{grid-column:1/-1;text-align:center;padding:48px 16px;background:var(--bg);border:1px dashed var(--rose-deep);border-radius:var(--radius)}
+.empty h3{font-size:24px;margin-bottom:8px}
+.empty p{color:var(--muted);margin-bottom:18px}
+
+/* Marcas */
+.brands{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.brand-chip{
+  padding:14px 26px;border-radius:999px;background:var(--surface);border:1px solid var(--line);
+  font-family:var(--font-head);font-style:italic;font-size:20px;transition:background .3s,transform .3s var(--ease),border-color .3s
+}
+.brand-chip:hover{background:var(--tone-b);border-color:transparent;transform:translateY(-4px)}
+
+/* ==========================================================================
+   7. INSPIRACIÓN
+   ========================================================================== */
+.inspo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(16px,2.4vw,28px)}
+.inspo-card{
+  display:grid;grid-template-columns:44% 1fr;min-height:300px;border-radius:var(--radius-lg);overflow:hidden;background:var(--tone-b);
+  transition:transform .4s var(--ease),box-shadow .4s
+}
+.inspo-card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.inspo-card:hover .media img.is-loaded{transform:scale(1.06)}
+.inspo-card .media{min-height:100%}
+.inspo-body{display:flex;flex-direction:column;justify-content:center;padding:clamp(22px,3vw,40px)}
+.inspo-body .chip{align-self:flex-start;margin-bottom:14px;font-size:11px}
+.inspo-body h3{font-size:clamp(24px,2.6vw,32px);margin-bottom:10px}
+.inspo-body p{font-size:14.5px;margin-bottom:20px}
+.inspo-body .link-arrow{color:var(--text)}
+
+/* ==========================================================================
+   8. FOOTER
+   ========================================================================== */
+.site-footer{background:var(--surface);border-top:1px solid var(--line);margin-top:clamp(48px,7vw,88px)}
+.footer-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1.4fr;gap:clamp(24px,4vw,56px);padding-block:clamp(40px,6vw,72px)}
+.footer-col h4{font-size:20px;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.footer-col h4::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--c,var(--rose))}
+.footer-col li+li{margin-top:10px}
+.footer-col a{color:var(--muted);font-size:14.5px;transition:color .2s,padding .25s var(--ease)}
+.footer-col li a:hover{color:var(--rose-ink);padding-left:6px}
+.footer-col p{color:var(--muted);font-size:14.5px;margin-bottom:16px}
+.socials{display:flex;gap:10px;margin-bottom:24px}
+.socials a{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--tone-b);color:var(--text);transition:transform .3s var(--ease),background .25s,color .25s}
+.socials a:hover{transform:translateY(-4px) rotate(-6deg);background:var(--text);color:#fff;padding:0}
+.newsletter{display:flex;gap:8px;padding:6px;border:1px solid var(--line);border-radius:999px;background:var(--bg);transition:box-shadow .25s,border-color .25s}
+.newsletter:focus-within{border-color:var(--rose-deep);box-shadow:0 0 0 4px rgba(248,187,208,.45)}
+.newsletter input{flex:1;min-width:0;border:0;background:transparent;padding:10px 14px;font-size:14.5px}
+.newsletter input:focus{outline:none}
+.newsletter button{padding:10px 22px;border-radius:999px;background:var(--text);color:#fff;font-size:14px;font-weight:500;transition:background .25s}
+.newsletter button:hover{background:var(--rose-ink)}
+.footer-bottom{border-top:1px solid var(--line);padding-block:20px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;font-size:13px;color:var(--muted)}
+
+/* ==========================================================================
+   9. PANELES (menú móvil y carrito) + TOAST
+   ========================================================================== */
+.overlay{position:fixed;inset:0;z-index:90;background:rgba(51,51,51,.4);opacity:0;visibility:hidden;transition:opacity .35s,visibility 0s .35s}
+.overlay.is-visible{opacity:1;visibility:visible;transition-delay:0s}
+.drawer{
+  position:fixed;top:0;right:0;z-index:100;height:100vh;height:100dvh;width:min(420px,100%);background:var(--surface);
+  display:flex;flex-direction:column;transform:translateX(100%);visibility:hidden;
+  transition:transform .45s var(--ease),visibility 0s .45s;box-shadow:var(--shadow)
+}
+.drawer.is-open{transform:none;visibility:visible;transition-delay:0s}
+.drawer.from-left{right:auto;left:0;transform:translateX(-100%)}
+.drawer.from-left.is-open{transform:none}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--line)}
+.drawer-head h2{font-size:24px}
+.drawer-body{flex:1;overflow-y:auto;padding:18px 22px}
+.drawer-foot{padding:20px 22px;border-top:1px solid var(--line);background:var(--bg)}
+.subtotal{display:flex;justify-content:space-between;font-weight:600;font-size:18px;margin-bottom:14px}
+.drawer-foot .btn{width:100%}
+
+.cart-item{display:grid;grid-template-columns:72px 1fr auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.cart-item .media{width:72px;height:88px;border-radius:14px}
+.cart-item .media::before{font-size:26px}
+.cart-item h3{font-family:var(--font-body);font-size:14px;font-weight:500;line-height:1.35}
+.cart-item .brand{font-size:10.5px}
+.qty{display:inline-flex;align-items:center;gap:2px;margin-top:8px;border:1px solid var(--line);border-radius:999px}
+.qty button{width:30px;height:30px;display:grid;place-items:center;border-radius:50%}
+.qty button:hover{background:var(--rose-soft)}
+.qty span{min-width:22px;text-align:center;font-size:14px;font-weight:500}
+.cart-item .line-total{font-weight:600;font-size:14.5px;text-align:right}
+.remove{color:var(--muted);margin-top:8px;display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%}
+.remove:hover{color:var(--rose-ink);background:var(--rose-soft)}
+.cart-empty{text-align:center;padding:48px 8px}
+.cart-empty .ic{width:48px;height:48px;color:var(--rose-deep);margin:0 auto 14px}
+.cart-empty p{color:var(--muted);margin-bottom:18px}
+
+/* Menú móvil */
+.m-nav a,.m-nav .m-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;padding:14px 4px;font-size:17px;font-weight:500;border-bottom:1px solid var(--line);text-align:left}
+.m-nav .m-toggle .ic{transition:transform .3s var(--ease)}
+.m-nav .m-toggle[aria-expanded="true"] .ic{transform:rotate(180deg)}
+.m-sub{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s var(--ease)}
+.m-sub.is-open{grid-template-rows:1fr}
+.m-sub>ul{overflow:hidden}
+.m-sub a{font-size:15.5px;font-weight:400;padding:12px 4px 12px 18px;gap:12px;justify-content:flex-start}
+
+.toast{
+  position:fixed;left:50%;bottom:24px;z-index:150;transform:translate(-50%,30px);opacity:0;pointer-events:none;
+  background:var(--text);color:#fff;padding:12px 22px;border-radius:999px;font-size:14px;box-shadow:var(--shadow);max-width:calc(100% - 32px);text-align:center;
+  transition:opacity .3s,transform .45s var(--ease)
+}
+.toast.is-visible{opacity:1;transform:translate(-50%,0)}
+
+/* ==========================================================================
+   10. RESPONSIVE
+   ========================================================================== */
+@media (hover:none){
+  .quick-add{display:none}              /* en táctil basta con el botón redondo */
+}
+@media (max-width:1100px){
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:960px){
+  .main-nav{display:none}
+  .menu-toggle{display:grid}
+  .search-toggle{display:grid}
+  .header-inner{display:flex;justify-content:space-between;position:relative}
+  .logo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+  .search{position:absolute;left:clamp(16px,4vw,32px);right:clamp(16px,4vw,32px);top:100%;margin-top:6px;display:none}
+  .search-open .search{display:block}
+  .search input,.search input:focus{width:100%;box-shadow:var(--shadow-sm)}
+  .benefits{grid-template-columns:repeat(2,1fr)}
+  .product-grid{grid-template-columns:repeat(2,1fr)}
+  .cat-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:760px){
+  .inspo-grid{grid-template-columns:1fr}
+  .slide::after{background:linear-gradient(180deg,rgba(var(--tint),.95) 0%,rgba(var(--tint),.88) 58%,rgba(var(--tint),.4) 100%)}
+  .slide{align-items:flex-start}
+  .slider-btn{display:none}
+  .slider{min-height:520px}
+  .section-head{align-items:flex-start}
+}
+@media (max-width:560px){
+  .product-info{padding-inline:2px}
+  .name{font-size:14px;min-height:4.2em}
+  .brand{font-size:10.5px}
+  .price{font-size:16px}
+  .add-round{width:36px;height:36px}
+  .inspo-card{grid-template-columns:1fr}
+  .inspo-card .media{height:210px}
+  .footer-grid{grid-template-columns:1fr}
+  .benefit{padding:12px}
+  .benefit .ico{width:40px;height:40px}
+  .tab{padding:9px 16px}
+}
+@media (max-width:420px){
+  .logo{font-size:22px}
+  .acct{display:none}                   /* "Mi cuenta" sigue disponible en el menú */
+  .newsletter{flex-direction:column;border-radius:24px}
+  .newsletter button{width:100%}
+}
+@media (max-width:340px){
+  .product-grid{grid-template-columns:1fr}
+  .product-media{aspect-ratio:1/1}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important;transition-delay:0s!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+<noscript><style>.reveal,.slide-content>*{opacity:1!important;transform:none!important}</style></noscript>
+</head>
+
+<body id="top">
+
+<!-- Sprite de iconos -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c.9-3.7 4-5.5 7.5-5.5s6.6 1.8 7.5 5.5"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.6 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 6.5h11v9.5H3z"/><path d="M14 10h3.8L21 13v3h-7"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4.5v4h-4"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.5-3 7.8-7 9.5-4-1.7-7-5-7-9.5V6z"/><path d="M9 12l2.2 2.2L15.5 10"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3c.6 4.4 2.6 6.4 7 7-4.4.6-6.4 2.6-7 7-.6-4.4-2.6-6.4-7-7 4.4-.6 6.4-2.6 7-7z"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M5 7h14M10 7V5h4v2M7 7l1 12h8l1-12"/></symbol>
+    <symbol id="i-insta" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.6"/><circle cx="17" cy="7" r=".6"/></symbol>
+    <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M14.5 20v-7.5H17l.5-3h-3V7.8c0-.9.4-1.5 1.6-1.5h1.5V3.6A18 18 0 0 0 15 3.5c-2.3 0-3.800 1.400-3.800 3.900v2.100H8.700v3h2.500V20"/></symbol>
+    <symbol id="i-tiktok" viewBox="0 0 24 24"><path d="M14 4v10.500a3.500 3.500 0 1 1-3.500-3.500"/><path d="M14 4c.4 2.600 2 4.200 4.500 4.500"/></symbol>
+    <symbol id="i-pinterest" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="M11 16.500l1.300-6.200c.3-1.300 2.200-1.200 2.500.1.300 1.400-.7 3.200-2.100 3.200-.9 0-1.500-.6-1.500-1.400"/></symbol>
+  </defs>
+</svg>
+
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+<div class="announce">Envío gratis en compras desde <strong>$50</strong> · Regalo sorpresa en tu primer pedido ✦</div>
+
+<!-- ================= HEADER GLOBAL ================= -->
+<header class="site-header" id="header">
+  <div class="container header-inner">
+
+    <div class="header-left">
+      <button class="icon-btn menu-toggle" id="menuToggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileNav">
+        <svg class="ic"><use href="#i-menu"/></svg>
+      </button>
+
+      <nav class="main-nav" aria-label="Navegación principal">
+        <ul>
+          <li class="has-dropdown">
+            <button class="nav-link" type="button" aria-expanded="false" aria-haspopup="true">
+              Tienda <svg class="ic"><use href="#i-chevron"/></svg>
+            </button>
+            <div class="dropdown" role="menu">
+              <a href="#novedades" data-search="rostro" role="menuitem"><i class="dot" style="--c:var(--rose)"></i>Rostro</a>
+              <a href="#novedades" data-search="ojos" role="menuitem"><i class="dot" style="--c:var(--lavender)"></i>Ojos</a>
+              <a href="#novedades" data-search="labios" role="menuitem"><i class="dot" style="--c:var(--peach)"></i>Labios</a>
+              <a href="#novedades" data-search="unas" role="menuitem"><i class="dot" style="--c:var(--mint)"></i>Uñas</a>
+              <a href="#novedades" data-search="brochas" role="menuitem"><i class="dot" style="--c:var(--rose)"></i>Brochas</a>
+              <a href="#novedades" data-search="piel" role="menuitem"><i class="dot" style="--c:var(--lavender)"></i>Cuidado de la piel</a>
+              <a class="all" href="#novedades" data-search="all" role="menuitem">Ver toda la tienda →</a>
+            </div>
+          </li>
+          <li><a class="nav-link" href="#novedades">Novedades y ofertas</a></li>
+          <li><a class="nav-link" href="#marcas">Marcas</a></li>
+          <li><a class="nav-link" href="#inspiracion">Inspiración</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <a class="logo" href="#top" aria-label="Akari Store, ir al inicio">
+      <svg class="ic"><use href="#i-sparkle"/></svg>Akari <em>Store</em>
+    </a>
+
+    <div class="header-actions">
+      <form class="search" id="searchForm" role="search">
+        <label class="visually-hidden" for="searchInput">Buscar productos</label>
+        <svg class="ic"><use href="#i-search"/></svg>
+        <input id="searchInput" type="search" placeholder="Buscar productos" autocomplete="off">
+      </form>
+      <button class="icon-btn search-toggle" id="searchToggle" type="button" aria-label="Buscar" aria-expanded="false">
+        <svg class="ic"><use href="#i-search"/></svg>
+      </button>
+      <a class="icon-btn acct" href="#" data-toast="El inicio de sesión llega en la siguiente fase del prototipo" aria-label="Mi cuenta">
+        <svg class="ic"><use href="#i-user"/></svg>
+      </a>
+      <button class="icon-btn" type="button" data-open-cart aria-label="Abrir carrito">
+        <svg class="ic"><use href="#i-bag"/></svg>
+        <span class="count" data-cart-count aria-live="polite">0</span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<main id="contenido">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero container" aria-roledescription="carrusel" aria-label="Promociones y nuevos lanzamientos">
+    <h1 class="visually-hidden">Akari Store: maquillaje y cuidado de la piel</h1>
+
+    <div class="slider" id="slider">
+
+      <article class="slide is-active" style="--tint:248,187,208" aria-roledescription="diapositiva" aria-label="1 de 3">
+        <div class="media bg tone-rose"><img alt="" data-kw="makeup" data-w="1600" data-h="900" data-seed="101"></div>
+        <div class="slide-content">
+          <span class="chip">Promociones</span>
+          <h2>Hasta <em>30%</em> en tu rutina de rostro</h2>
+          <p>Bases, correctores y rubores con precios suaves. Solo por esta semana.</p>
+          <div class="cta-row">
+            <a class="btn btn-dark" href="#novedades" data-show-tab="top">Ver promociones <svg class="ic ic-sm"><use href="#i-arrow"/></svg></a>
+            <a class="btn btn-ghost" href="#tienda">Explorar categorías</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="slide" style="--tint:255,224,178" aria-roledescription="diapositiva" aria-label="2 de 3" aria-hidden="true">
+        <div class="media bg tone-peach"><img alt="" data-kw="cosmetics" data-w="1600" data-h="900" data-seed="102"></div>
+        <div class="slide-content">
+          <span class="chip">Nuevos lanzamientos</span>
+          <h2>Colección Sakura: color que <em>florece</em></h2>
+          <p>Paletas, labiales y tonos cálidos inspirados en la primavera.</p>
+          <div class="cta-row">
+            <a class="btn btn-dark" href="#novedades" data-show-tab="nuevo">Comprar Novedades <svg class="ic ic-sm"><use href="#i-arrow"/></svg></a>
+            <a class="btn btn-ghost" href="#inspiracion">Ver looks</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="slide" style="--tint:209,196,231" aria-roledescription="diapositiva" aria-label="3 de 3" aria-hidden="true">
+        <div class="media bg tone-lavender"><img alt="" data-kw="skincare" data-w="1600" data-h="900" data-seed="103"></div>
+        <div class="slide-content">
+          <span class="chip">Cuidado de la piel</span>
+          <h2>Piel luminosa, paso a <em>paso</em></h2>
+          <p>Limpiadores, sérums e hidratantes para una rutina simple y constante.</p>
+          <div class="cta-row">
+            <a class="btn btn-dark" href="#novedades" data-search="piel">Descubrir skincare <svg class="ic ic-sm"><use href="#i-arrow"/></svg></a>
+            <a class="btn btn-ghost" href="#inspiracion">Rutinas guiadas</a>
+          </div>
+        </div>
+      </article>
+
+      <button class="slider-btn prev" type="button" aria-label="Diapositiva anterior"><svg class="ic"><use href="#i-left"/></svg></button>
+      <button class="slider-btn next" type="button" aria-label="Diapositiva siguiente"><svg class="ic"><use href="#i-right"/></svg></button>
+      <div class="dots" role="group" aria-label="Elegir diapositiva">
+        <button type="button" aria-label="Ir a la diapositiva 1" aria-current="true"></button>
+        <button type="button" aria-label="Ir a la diapositiva 2" aria-current="false"></button>
+        <button type="button" aria-label="Ir a la diapositiva 3" aria-current="false"></button>
+      </div>
+    </div>
+
+    <ul class="benefits">
+      <li class="benefit tone-rose"><span class="ico"><svg class="ic"><use href="#i-truck"/></svg></span><div><strong>Envíos a todo el país</strong><span>Gratis desde $50</span></div></li>
+      <li class="benefit tone-peach"><span class="ico"><svg class="ic"><use href="#i-refresh"/></svg></span><div><strong>Cambios y devoluciones</strong><span>Hasta 15 días</span></div></li>
+      <li class="benefit tone-mint"><span class="ico"><svg class="ic"><use href="#i-shield"/></svg></span><div><strong>Pago seguro</strong><span>Tarjeta o contra entrega</span></div></li>
+      <li class="benefit tone-lavender"><span class="ico"><svg class="ic"><use href="#i-sparkle"/></svg></span><div><strong>Productos originales</strong><span>Marcas verificadas</span></div></li>
+    </ul>
+  </section>
+
+  <!-- ================= CATEGORÍAS ================= -->
+  <section class="section container" id="tienda" aria-labelledby="t-cat">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow tone-rose">Tienda</span>
+        <h2 id="t-cat">Categorías destacadas</h2>
+        <p>Encuentra lo que buscas y arma tu rutina favorita.</p>
+      </div>
+      <a class="link-arrow" href="#novedades" data-search="all">Ver toda la tienda <svg class="ic ic-sm"><use href="#i-arrow"/></svg></a>
+    </div>
+
+    <div class="cat-grid">
+      <a class="cat-card reveal tone-rose" href="#novedades" data-search="rostro">
+        <div class="cat-circle"><div class="media"><img alt="Maquillaje de rostro" data-kw="face makeup" data-w="500" data-h="500" data-seed="201" loading="lazy"></div></div>
+        <h3>Rostro</h3><span>Explorar <svg class="ic ic-sm"><use href="#i-arrow"/></svg></span>
+      </a>
+      <a class="cat-card reveal tone-lavender" href="#novedades" data-search="ojos" style="transition-delay:.08s">
+        <div class="cat-circle"><div class="media"><img alt="Maquillaje de ojos" data-kw="eye makeup" data-w="500" data-h="500" data-seed="202" loading="lazy"></div></div>
+        <h3>Ojos</h3><span>Explorar <svg class="ic ic-sm"><use href="#i-arrow"/></svg></span>
+      </a>
+      <a class="cat-card reveal tone-peach" href="#novedades" data-search="labios" style="transition-delay:.16s">
+        <div class="cat-circle"><div class="media"><img alt="Labiales" data-kw="lipstick" data-w="500" data-h="500" data-seed="203" loading="lazy"></div></div>
+        <h3>Labios</h3><span>Explorar <svg class="ic ic-sm"><use href="#i-arrow"/></svg></span>
+      </a>
+      <a class="cat-card reveal tone-mint" href="#novedades" data-search="piel" style="transition-delay:.24s">
+        <div class="cat-circle"><div class="media"><img alt="Cuidado de la piel" data-kw="skincare" data-w="500" data-h="500" data-seed="204" loading="lazy"></div></div>
+        <h3>Cuidado de la piel</h3><span>Explorar <svg class="ic ic-sm"><use href="#i-arrow"/></svg></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ================= NOVEDADES Y MÁS VENDIDOS ================= -->
+  <div class="products-bg">
+    <section class="section container" id="novedades" aria-labelledby="t-prod">
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow tone-peach">Novedades y ofertas</span>
+          <h2 id="t-prod">Lo nuevo y lo más amado</h2>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Filtrar productos">
+          <button class="tab" role="tab" type="button" data-tab="nuevo" aria-selected="true">Novedades</button>
+          <button class="tab" role="tab" type="button" data-tab="top" aria-selected="false">Más vendidos</button>
+        </div>
+      </div>
+
+      <div class="results-note" id="resultsNote" hidden>
+        <span id="resultsText"></span>
+        <button type="button" id="resetFilter">Ver novedades</button>
+      </div>
+
+      <div class="product-grid" id="productGrid" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <!-- ================= MARCAS ================= -->
+  <section class="section container" id="marcas" aria-labelledby="t-brands">
+    <div class="section-head reveal" style="justify-content:center;text-align:center">
+      <div>
+        <span class="eyebrow tone-mint">Marcas</span>
+        <h2 id="t-brands">Marcas que amamos</h2>
+      </div>
+    </div>
+    <div class="brands reveal">
+      <a class="brand-chip tone-rose" href="#" data-todo>Akari Beauty</a>
+      <a class="brand-chip tone-peach" href="#" data-todo>Lumi</a>
+      <a class="brand-chip tone-mint" href="#" data-todo>Rosée</a>
+      <a class="brand-chip tone-lavender" href="#" data-todo>Kōhaku</a>
+      <a class="brand-chip tone-rose" href="#" data-todo>Mizu</a>
+      <a class="brand-chip tone-peach" href="#" data-todo>Petal &amp; Co</a>
+    </div>
+  </section>
+
+  <!-- ================= INSPIRACIÓN ================= -->
+  <section class="section container" id="inspiracion" aria-labelledby="t-inspo" style="padding-top:0">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow tone-lavender">Inspiración</span>
+        <h2 id="t-inspo">Aprende, imita, inspírate</h2>
+        <p>Contenido pensado para sacarle el máximo a tu maquillaje.</p>
+      </div>
+    </div>
+
+    <div class="inspo-grid">
+      <article class="inspo-card reveal tone-lavender">
+        <div class="media"><img alt="Tendencias de belleza" data-kw="beauty trends makeup" data-w="700" data-h="700" data-seed="301" loading="lazy"></div>
+        <div class="inspo-body">
+          <span class="chip">Blog de belleza</span>
+          <h3>Tendencias de la temporada</h3>
+          <p>Texturas glow, rubores en crema y sombras suaves: lo que se viene y cómo llevarlo.</p>
+          <a class="link-arrow" href="#" data-todo>Leer el blog <svg class="ic ic-sm"><use href="#i-arrow"/></svg></a>
+        </div>
+      </article>
+
+      <article class="inspo-card reveal tone-mint" style="transition-delay:.1s">
+        <div class="media"><img alt="Looks paso a paso" data-kw="makeup tutorial" data-w="700" data-h="700" data-seed="302" loading="lazy"></div>
+        <div class="inspo-body">
+          <span class="chip">Looks y paso a paso</span>
+          <h3>Looks fáciles en 5 pasos</h3>
+          <p>Del maquillaje de oficina al look de fiesta, con los productos exactos de cada paso.</p>
+          <a class="link-arrow" href="#" data-todo>Ver tutoriales <svg class="ic ic-sm"><use href="#i-arrow"/></svg></a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= FOOTER GLOBAL ================= -->
+<footer class="site-footer" id="contacto">
+  <div class="container footer-grid">
+    <div class="footer-col" style="--c:var(--rose)">
+      <h4>Sobre Akari Store</h4>
+      <ul>
+        <li><a href="#" data-todo>Quiénes somos</a></li>
+        <li><a href="#" data-todo>Nuestra misión</a></li>
+        <li><a href="#" data-todo>Tiendas físicas</a></li>
+      </ul>
+    </div>
+    <div class="footer-col" style="--c:var(--mint)">
+      <h4>Ayuda al cliente</h4>
+      <ul>
+        <li><a href="#" data-todo>Preguntas frecuentes</a></li>
+        <li><a href="#" data-todo>Envíos</a></li>
+        <li><a href="#" data-todo>Cambios y devoluciones</a></li>
+        <li><a href="#" data-todo>Contacto</a></li>
+      </ul>
+    </div>
+    <div class="footer-col" style="--c:var(--peach)">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#" data-todo>Términos y condiciones</a></li>
+        <li><a href="#" data-todo>Privacidad</a></li>
+      </ul>
+    </div>
+    <div class="footer-col" style="--c:var(--lavender)">
+      <h4>Síguenos</h4>
+      <div class="socials">
+        <a class="tone-rose" href="#" data-todo aria-label="Instagram"><svg class="ic"><use href="#i-insta"/></svg></a>
+        <a class="tone-peach" href="#" data-todo aria-label="Facebook"><svg class="ic"><use href="#i-facebook"/></svg></a>
+        <a class="tone-mint" href="#" data-todo aria-label="TikTok"><svg class="ic"><use href="#i-tiktok"/></svg></a>
+        <a class="tone-lavender" href="#" data-todo aria-label="Pinterest"><svg class="ic"><use href="#i-pinterest"/></svg></a>
+      </div>
+      <p>Suscríbete y recibe novedades, tutoriales y un 10% en tu primera compra.</p>
+      <form class="newsletter" id="newsletter" novalidate>
+        <label class="visually-hidden" for="nlEmail">Correo electrónico</label>
+        <input id="nlEmail" type="email" placeholder="tu@correo.com" required autocomplete="email">
+        <button type="submit">Suscribirme</button>
+      </form>
+    </div>
+  </div>
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> Akari Store. Todos los derechos reservados.</span>
+      <span>Prototipo de página de inicio · Hecho con cariño ✦</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Carrito flotante -->
+<button class="fab" id="fab" type="button" data-open-cart aria-label="Abrir carrito">
+  <svg class="ic"><use href="#i-bag"/></svg>
+  <span class="count" data-cart-count>0</span>
+</button>
+
+<!-- Paneles -->
+<div class="overlay" id="overlay"></div>
+
+<aside class="drawer from-left" id="mobileNav" aria-label="Menú" aria-hidden="true">
+  <div class="drawer-head">
+    <a class="logo" href="#top" data-close-panel><svg class="ic"><use href="#i-sparkle"/></svg>Akari <em>Store</em></a>
+    <button class="icon-btn" type="button" data-close-panel aria-label="Cerrar menú"><svg class="ic"><use href="#i-close"/></svg></button>
+  </div>
+  <nav class="drawer-body m-nav" aria-label="Menú móvil">
+    <button class="m-toggle" type="button" aria-expanded="false" aria-controls="mSub">Tienda <svg class="ic"><use href="#i-chevron"/></svg></button>
+    <div class="m-sub" id="mSub">
+      <ul>
+        <li><a href="#novedades" data-search="rostro" data-close-panel><i class="dot" style="--c:var(--rose)"></i>Rostro</a></li>
+        <li><a href="#novedades" data-search="ojos" data-close-panel><i class="dot" style="--c:var(--lavender)"></i>Ojos</a></li>
+        <li><a href="#novedades" data-search="labios" data-close-panel><i class="dot" style="--c:var(--peach)"></i>Labios</a></li>
+        <li><a href="#novedades" data-search="unas" data-close-panel><i class="dot" style="--c:var(--mint)"></i>Uñas</a></li>
+        <li><a href="#novedades" data-search="brochas" data-close-panel><i class="dot" style="--c:var(--rose)"></i>Brochas</a></li>
+        <li><a href="#novedades" data-search="piel" data-close-panel><i class="dot" style="--c:var(--lavender)"></i>Cuidado de la piel</a></li>
+      </ul>
+    </div>
+    <a href="#novedades" data-close-panel>Novedades y ofertas</a>
+    <a href="#marcas" data-close-panel>Marcas</a>
+    <a href="#inspiracion" data-close-panel>Inspiración</a>
+    <a href="#" data-toast="El inicio de sesión llega en la siguiente fase del prototipo" data-close-panel>Mi cuenta</a>
+  </nav>
+</aside>
+
+<aside class="drawer" id="cartDrawer" aria-label="Carrito de compras" aria-hidden="true">
+  <div class="drawer-head">
+    <h2>Tu carrito</h2>
+    <button class="icon-btn" type="button" data-close-panel aria-label="Cerrar carrito"><svg class="ic"><use href="#i-close"/></svg></button>
+  </div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot" id="cartFoot">
+    <div class="subtotal"><span>Subtotal</span><span id="cartSubtotal">$0.00</span></div>
+    <button class="btn btn-dark" type="button" id="checkoutBtn">Finalizar compra</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ------------------------------------------------------------------
+     Utilidades
+     ------------------------------------------------------------------ */
+  const $  = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const money = n => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n);
+  const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const icon = (id, cls = '') => `<svg class="ic ${cls}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ------------------------------------------------------------------
+     Imágenes
+     NOTA: source.unsplash.com (la API por palabras clave) fue
+     discontinuada por Unsplash, por eso aquí se usa un servicio que
+     sí acepta palabras clave. Para usar fotos concretas de Unsplash,
+     cambia SOLO esta función, por ejemplo:
+       return `https://images.unsplash.com/photo-XXXX?auto=format&fit=crop&w=${w}&h=${h}&q=80`;
+     Si una foto no carga, se ve el degradado pastel de respaldo.
+     ------------------------------------------------------------------ */
+  const imageUrl = (keywords, w, h, seed) =>
+    `https://loremflickr.com/${w}/${h}/${keywords.trim().split(/\s+/).join(',')}?lock=${seed}`;
+
+  function hydrateImages(root = document) {
+    $$('img[data-kw]:not([data-ready])', root).forEach(img => {
+      img.dataset.ready = '1';
+      img.addEventListener('load',  () => img.classList.add('is-loaded'), { once: true });
+      img.addEventListener('error', () => img.remove(), { once: true });
+      img.src = imageUrl(img.dataset.kw, img.dataset.w || 800, img.dataset.h || 800, img.dataset.seed || 1);
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     Datos de productos
+     ------------------------------------------------------------------ */
+  const CATS = { rostro: 'Rostro', ojos: 'Ojos', labios: 'Labios', unas: 'Uñas', brochas: 'Brochas', piel: 'Cuidado de la piel' };
+
+  const PRODUCTS = [
+    { id: 1, name: 'Base Velvet Skin SPF 30',               brand: 'Lumi',         price: 24.9, cat: 'rostro',  tab: 'nuevo', badge: 'Nuevo',      tone: 'peach',    kw: 'foundation makeup' },
+    { id: 2, name: 'Paleta de sombras Sakura · 12 tonos',   brand: 'Akari Beauty', price: 32,   cat: 'ojos',    tab: 'nuevo', badge: 'Nuevo',      tone: 'lavender', kw: 'eyeshadow palette' },
+    { id: 3, name: 'Labial satín Rosa Té',                  brand: 'Rosée',        price: 14.5, cat: 'labios',  tab: 'nuevo', badge: 'Nuevo',      tone: 'rose',     kw: 'lipstick' },
+    { id: 4, name: 'Sérum hidratante de ácido hialurónico', brand: 'Mizu',         price: 28,   cat: 'piel',    tab: 'nuevo', badge: 'Nuevo',      tone: 'mint',     kw: 'skincare serum' },
+    { id: 5, name: 'Máscara de pestañas Volumen Nube',      brand: 'Kōhaku',       price: 16.9, cat: 'ojos',    tab: 'top',   badge: 'Top ventas', tone: 'lavender', kw: 'mascara eyes' },
+    { id: 6, name: 'Rubor en crema Melocotón',              brand: 'Petal & Co',   price: 15,   old: 19, cat: 'rostro',  tab: 'top', badge: '-21%',  tone: 'peach', kw: 'blush makeup' },
+    { id: 7, name: 'Set de brochas Esenciales · 8 piezas',  brand: 'Akari Beauty', price: 39,   old: 49, cat: 'brochas', tab: 'top', badge: '-20%',  tone: 'rose',  kw: 'makeup brushes' },
+    { id: 8, name: 'Agua micelar Calm',                     brand: 'Mizu',         price: 12,   cat: 'piel',    tab: 'top',   badge: 'Favorito',   tone: 'mint',     kw: 'skincare cleanser' }
+  ];
+  const byId = id => PRODUCTS.find(p => p.id === Number(id));
+
+  /* ------------------------------------------------------------------
+     Tarjetas de producto + filtros
+     ------------------------------------------------------------------ */
+  const grid = $('#productGrid');
+  const note = $('#resultsNote');
+  const noteText = $('#resultsText');
+  const tabs = $$('.tab');
+  let currentTab = 'nuevo';
+
+  const cardTpl = (p, i) => `
+    <article class="product-card" style="--i:${i}">
+      <div class="media product-media tone-${p.tone}">
+        <img alt="${esc(p.name)}" data-kw="${esc(p.kw)}" data-w="640" data-h="800" data-seed="${p.id}" loading="lazy" decoding="async">
+        ${p.badge ? `<span class="tag">${esc(p.badge)}</span>` : ''}
+        <button class="wish" type="button" aria-pressed="false" aria-label="Guardar ${esc(p.name)} en favoritos">${icon('heart')}</button>
+        <button class="quick-add" type="button" data-add="${p.id}">${icon('bag', 'ic-sm')} Añadir al carrito</button>
+      </div>
+      <div class="product-info">
+        <p class="brand">${esc(p.brand)}</p>
+        <h3 class="name"><a href="#" data-todo>${esc(p.name)}</a></h3>
+        <div class="price-row">
+          <span class="price">${money(p.price)}</span>
+          ${p.old ? `<s class="old">${money(p.old)}</s>` : ''}
+          <button class="add-round" type="button" data-add="${p.id}" aria-label="Añadir ${esc(p.name)} al carrito">${icon('plus', 'ic-sm')}</button>
+        </div>
+      </div>
+    </article>`;
+
+  function renderGrid(list, emptyLabel) {
+    if (!list.length) {
+      grid.innerHTML = `<div class="empty"><h3>Aún no hay productos aquí</h3><p></p><button class="btn btn-dark" type="button" data-reset>Ver novedades</button></div>`;
+      $('.empty p', grid).textContent = `No encontramos resultados para ${emptyLabel}. Pronto sumaremos más productos.`;
+      return;
+    }
+    grid.innerHTML = list.map(cardTpl).join('');
+    hydrateImages(grid);
+  }
+
+  function setTab(name) {
+    currentTab = name;
+    note.hidden = true;
+    tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.tab === name)));
+    renderGrid(PRODUCTS.filter(p => p.tab === name));
+  }
+
+  function showFiltered({ cat, q }) {
+    const nq = norm(q || '');
+    const list = PRODUCTS.filter(p =>
+      (!cat || cat === 'all' || p.cat === cat) &&
+      (!nq || norm(`${p.name} ${p.brand} ${CATS[p.cat]}`).includes(nq))
+    );
+    const label = cat && cat !== 'all' ? CATS[cat] : nq ? `“${q.trim()}”` : 'Toda la tienda';
+    tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
+    note.hidden = false;
+    noteText.textContent = `${label} · ${list.length} ${list.length === 1 ? 'producto' : 'productos'}`;
+    renderGrid(list, label);
+  }
+
+  tabs.forEach(t => t.addEventListener('click', () => setTab(t.dataset.tab)));
+  $('#resetFilter').addEventListener('click', () => setTab('nuevo'));
+
+  /* ------------------------------------------------------------------
+     Carrito
+     ------------------------------------------------------------------ */
+  const cartBody = $('#cartBody');
+  const cartFoot = $('#cartFoot');
+  let cart = loadCart();
+
+  function loadCart() {
+    try { return (JSON.parse(localStorage.getItem('akari-cart')) || []).filter(i => byId(i.id)); }
+    catch { return []; }
+  }
+  function saveCart() {
+    try { localStorage.setItem('akari-cart', JSON.stringify(cart)); } catch { /* sin almacenamiento */ }
+  }
+
+  function renderCart() {
+    const units = cart.reduce((n, i) => n + i.qty, 0);
+    const total = cart.reduce((n, i) => n + i.qty * byId(i.id).price, 0);
+
+    $$('[data-cart-count]').forEach(el => {
+      el.textContent = units;
+      el.classList.toggle('has-items', units > 0);
+    });
+    $('#cartSubtotal').textContent = money(total);
+    cartFoot.hidden = !units;
+
+    if (!units) {
+      cartBody.innerHTML = `
+        <div class="cart-empty">
+          ${icon('bag')}
+          <h3>Tu carrito está vacío</h3>
+          <p>Agrega tus favoritos y arma tu rutina ideal.</p>
+          <button class="btn btn-dark" type="button" data-close-panel data-goto="#novedades">Ver novedades</button>
+        </div>`;
+      return;
+    }
+
+    cartBody.innerHTML = cart.map(({ id, qty }) => {
+      const p = byId(id);
+      return `
+        <div class="cart-item">
+          <div class="media tone-${p.tone}"><img alt="" data-kw="${esc(p.kw)}" data-w="640" data-h="800" data-seed="${p.id}"></div>
+          <div>
+            <p class="brand">${esc(p.brand)}</p>
+            <h3>${esc(p.name)}</h3>
+            <div class="qty">
+              <button type="button" data-qty="dec" data-id="${p.id}" aria-label="Quitar una unidad">${icon('minus', 'ic-sm')}</button>
+              <span aria-live="polite">${qty}</span>
+              <button type="button" data-qty="inc" data-id="${p.id}" aria-label="Agregar una unidad">${icon('plus', 'ic-sm')}</button>
+            </div>
+          </div>
+          <div>
+            <div class="line-total">${money(p.price * qty)}</div>
+            <button class="remove" type="button" data-qty="del" data-id="${p.id}" aria-label="Eliminar ${esc(p.name)}">${icon('trash', 'ic-sm')}</button>
+          </div>
+        </div>`;
+    }).join('');
+    hydrateImages(cartBody);
+  }
+
+  function addToCart(id) {
+    const line = cart.find(i => i.id === Number(id));
+    line ? line.qty++ : cart.push({ id: Number(id), qty: 1 });
+    saveCart(); renderCart();
+    $$('[data-cart-count]').forEach(el => { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); });
+    toast(`${byId(id).name} añadido al carrito`);
+  }
+
+  function changeQty(id, action) {
+    const line = cart.find(i => i.id === Number(id));
+    if (!line) return;
+    if (action === 'inc') line.qty++;
+    if (action === 'dec') line.qty--;
+    if (action === 'del' || line.qty <= 0) cart = cart.filter(i => i !== line);
+    saveCart(); renderCart();
+  }
+
+  /* ------------------------------------------------------------------
+     Toast
+     ------------------------------------------------------------------ */
+  const toastEl = $('#toast');
+  let toastTimer;
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('is-visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('is-visible'), 2600);
+  }
+
+  /* ------------------------------------------------------------------
+     Paneles laterales (menú móvil y carrito)
+     ------------------------------------------------------------------ */
+  const overlay = $('#overlay');
+  const menuToggle = $('#menuToggle');
+  let activePanel = null;
+  let lastTrigger = null;
+
+  function openPanel(panel, trigger) {
+    closePanel(true);
+    lastTrigger = trigger || document.activeElement;
+    panel.classList.add('is-open');
+    panel.setAttribute('aria-hidden', 'false');
+    overlay.classList.add('is-visible');
+    document.body.classList.add('no-scroll');
+    if (panel.id === 'mobileNav') menuToggle.setAttribute('aria-expanded', 'true');
+    activePanel = panel;
+    setTimeout(() => $('button, a', panel)?.focus({ preventScroll: true }), 60);
+  }
+  function closePanel(silent) {
+    if (!activePanel) return;
+    activePanel.classList.remove('is-open');
+    activePanel.setAttribute('aria-hidden', 'true');
+    overlay.classList.remove('is-visible');
+    document.body.classList.remove('no-scroll');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    activePanel = null;
+    if (!silent) lastTrigger?.focus?.({ preventScroll: true });
+  }
+
+  menuToggle.addEventListener('click', () => openPanel($('#mobileNav'), menuToggle));
+  overlay.addEventListener('click', () => closePanel());
+
+  // Acordeón "Tienda" en menú móvil
+  const mToggle = $('.m-toggle');
+  mToggle.addEventListener('click', () => {
+    const open = mToggle.getAttribute('aria-expanded') !== 'true';
+    mToggle.setAttribute('aria-expanded', String(open));
+    $('#mSub').classList.toggle('is-open', open);
+  });
+
+  /* ------------------------------------------------------------------
+     Dropdown "Tienda" (escritorio)
+     ------------------------------------------------------------------ */
+  const canHover = matchMedia('(hover: hover)').matches;
+  $$('.has-dropdown').forEach(item => {
+    const btn = $('.nav-link', item);
+    const setOpen = open => { item.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open)); };
+    btn.addEventListener('click', e => {
+      if (canHover && e.detail > 0) setOpen(true);          // con ratón, el hover ya lo abrió
+      else setOpen(!item.classList.contains('open'));        // teclado / táctil: alterna
+    });
+    if (canHover) {
+      let t;
+      item.addEventListener('mouseenter', () => { clearTimeout(t); setOpen(true); });
+      item.addEventListener('mouseleave', () => { t = setTimeout(() => setOpen(false), 120); });
+    }
+    item.addEventListener('focusout', e => { if (!item.contains(e.relatedTarget)) setOpen(false); });
+    document.addEventListener('click', e => { if (!item.contains(e.target)) setOpen(false); });
+    item.addEventListener('keydown', e => { if (e.key === 'Escape') { setOpen(false); btn.focus(); } });
+    item.addEventListener('click', e => { if (e.target.closest('.dropdown a')) setOpen(false); });
+  });
+
+  /* ------------------------------------------------------------------
+     Header sticky + botón flotante del carrito
+     ------------------------------------------------------------------ */
+  const header = $('#header');
+  const fab = $('#fab');
+  const onScroll = () => {
+    header.classList.toggle('is-scrolled', window.scrollY > 10);
+    fab.classList.toggle('is-visible', window.scrollY > 360 && !activePanel);
+  };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ------------------------------------------------------------------
+     Búsqueda
+     ------------------------------------------------------------------ */
+  const searchForm = $('#searchForm');
+  const searchInput = $('#searchInput');
+  const searchToggle = $('#searchToggle');
+
+  searchToggle.addEventListener('click', () => {
+    const open = header.classList.toggle('search-open');
+    searchToggle.setAttribute('aria-expanded', String(open));
+    if (open) searchInput.focus();
+  });
+  searchForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const q = searchInput.value;
+    if (!norm(q)) { setTab('nuevo'); }
+    else showFiltered({ q });
+    header.classList.remove('search-open');
+    searchToggle.setAttribute('aria-expanded', 'false');
+    $('#novedades').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
+
+  /* ------------------------------------------------------------------
+     Clicks delegados (carrito, filtros, favoritos, avisos)
+     ------------------------------------------------------------------ */
+  document.addEventListener('click', e => {
+    const t = e.target;
+
+    const add = t.closest('[data-add]');
+    if (add) { addToCart(add.dataset.add); return; }
+
+    const qty = t.closest('[data-qty]');
+    if (qty) { changeQty(qty.dataset.id, qty.dataset.qty); return; }
+
+    const wish = t.closest('.wish');
+    if (wish) {
+      const on = wish.getAttribute('aria-pressed') !== 'true';
+      wish.setAttribute('aria-pressed', String(on));
+      toast(on ? 'Guardado en tu lista de deseos' : 'Quitado de tu lista de deseos');
+      return;
+    }
+
+    if (t.closest('[data-open-cart]')) { openPanel($('#cartDrawer'), t.closest('[data-open-cart]')); return; }
+
+    const search = t.closest('[data-search]');
+    if (search) {
+      const cat = search.dataset.search;
+      showFiltered({ cat });
+      closePanel(true);
+      return;                                  // el ancla #novedades hace el scroll
+    }
+
+    const showTab = t.closest('[data-show-tab]');
+    if (showTab) { setTab(showTab.dataset.showTab); return; }
+
+    if (t.closest('[data-reset]')) { setTab('nuevo'); return; }
+
+    const goto = t.closest('[data-goto]');
+    if (goto) { closePanel(true); setTab('nuevo'); $(goto.dataset.goto)?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' }); return; }
+
+    const close = t.closest('[data-close-panel]');
+    if (close) { closePanel(true); }
+
+    const todo = t.closest('[data-todo]');
+    if (todo) { e.preventDefault(); toast('Esta página estará disponible pronto ✦'); return; }
+
+    const msg = t.closest('[data-toast]');
+    if (msg) { e.preventDefault(); toast(msg.dataset.toast); }
+  });
+
+  addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+
+  $('#checkoutBtn').addEventListener('click', () => toast('Demo: el checkout se construye en la siguiente fase'));
+
+  /* ------------------------------------------------------------------
+     Newsletter
+     ------------------------------------------------------------------ */
+  $('#newsletter').addEventListener('submit', e => {
+    e.preventDefault();
+    const input = $('#nlEmail');
+    if (!input.checkValidity() || !input.value.trim()) { toast('Escribe un correo válido para suscribirte'); input.focus(); return; }
+    toast('¡Gracias por suscribirte a Akari Store! ✦');
+    e.target.reset();
+  });
+
+  /* ------------------------------------------------------------------
+     Slider del hero
+     ------------------------------------------------------------------ */
+  (function slider() {
+    const root = $('#slider');
+    const slides = $$('.slide', root);
+    const dots = $$('.dots button', root);
+    let index = 0, timer = null;
+
+    function go(n) {
+      index = (n + slides.length) % slides.length;
+      slides.forEach((s, i) => {
+        const on = i === index;
+        s.classList.toggle('is-active', on);
+        s.setAttribute('aria-hidden', String(!on));
+        s.inert = !on;
+      });
+      dots.forEach((d, i) => d.setAttribute('aria-current', String(i === index)));
+    }
+    const start = () => { if (!reduceMotion && !timer) timer = setInterval(() => go(index + 1), 6500); };
+    const stop  = () => { clearInterval(timer); timer = null; };
+
+    $('.prev', root).addEventListener('click', () => { go(index - 1); stop(); start(); });
+    $('.next', root).addEventListener('click', () => { go(index + 1); stop(); start(); });
+    dots.forEach((d, i) => d.addEventListener('click', () => { go(i); stop(); start(); }));
+
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', start);
+    document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+
+    // Deslizar con el dedo
+    let x0 = null;
+    root.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+    root.addEventListener('touchend', e => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 50) { go(index + (dx < 0 ? 1 : -1)); stop(); start(); }
+      x0 = null;
+    });
+
+    go(0);
+    start();
+  })();
+
+  /* ------------------------------------------------------------------
+     Animaciones al hacer scroll
+     ------------------------------------------------------------------ */
+  const reveals = $$('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); } });
+    }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => io.observe(el));
+  } else {
+    reveals.forEach(el => el.classList.add('is-in'));
+  }
+
+  /* ------------------------------------------------------------------
+     Inicio
+     ------------------------------------------------------------------ */
+  $('#year').textContent = new Date().getFullYear();
+  setTab('nuevo');
+  renderCart();
+  hydrateImages();
+})();
+</script>
+</body>
+</html>
